@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">NoteApplicationTest</string>
+    <string name="discard">Discard</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="note">Note</string>
+</resources>
