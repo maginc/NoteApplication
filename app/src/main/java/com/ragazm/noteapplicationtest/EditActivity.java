@@ -4,15 +4,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ragazm.noteapplicationtest.database.DBAdapter;
@@ -22,6 +26,8 @@ import java.util.ArrayList;
 public class EditActivity extends AppCompatActivity {
     EditText editTitle;
     EditText editText;
+
+    TextView textView;
 
     String tempTitle;
     String tempText;
@@ -59,6 +65,8 @@ public class EditActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_edit);
+
+
 
         editFlag = false;
 
@@ -130,16 +138,24 @@ public class EditActivity extends AppCompatActivity {
         database.close();
         Toast.makeText(getApplicationContext(), "Note edited successfully", Toast.LENGTH_SHORT).show();
     }
-
+//Alert dialog on back button pressed
     @Override
     public void onBackPressed() {
         if (ifEdited()){
 
             AlertDialog.Builder builder;
 
-            builder = new AlertDialog.Builder(EditActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+            builder = new AlertDialog.Builder(EditActivity.this);
+            TextView textView = new TextView(this);
+            textView.setText("Save changes?");
+            textView.setGravity(Gravity.CENTER_HORIZONTAL);
+            textView.setTextSize(22);
+            textView.setTextColor(Color.BLACK);
+            textView.setTypeface(null, Typeface.BOLD);
+
+
             builder.setTitle(null)
-                    .setMessage("Save changes?")
+                    .setView(textView)
                     .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

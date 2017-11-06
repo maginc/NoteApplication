@@ -57,8 +57,6 @@ public class MainActivity extends AppCompatActivity {
                 // Open EditActivity, pass data, create intent
                 Intent intent = new Intent(MainActivity.this, EditActivity.class);
                 //load data
-                //intent.putExtra("Title", notes.get(position).getTitle());
-                //intent.putExtra("Text", notes.get(position).getText());
                 intent.putExtra("ID", position);
 
                 //Test test test test************************************
@@ -115,11 +113,9 @@ public class MainActivity extends AppCompatActivity {
 
        // Context context;
 
-        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-            builder = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_Material_Dialog_Alert);
-       // } else{
-           // builder = new AlertDialog.Builder(getApplicationContext());
-       // }
+
+            builder = new AlertDialog.Builder(MainActivity.this);
+
         builder.setTitle("Delete Note")
                 .setMessage("Are you sure you want to delete this note?")
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
