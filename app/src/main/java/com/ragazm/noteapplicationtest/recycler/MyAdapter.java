@@ -1,15 +1,17 @@
-package com.ragazm.noteapplicationtest;
+package com.ragazm.noteapplicationtest.recycler;
 
-import android.app.Activity;
+
 import android.content.Context;
-import android.content.Intent;
+
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
+
+import com.ragazm.noteapplicationtest.Note;
+import com.ragazm.noteapplicationtest.R;
 
 import java.util.ArrayList;
 

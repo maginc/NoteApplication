@@ -15,16 +15,9 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.ragazm.noteapplicationtest.database.DBAdapter;
+
 import java.util.ArrayList;
-
-//TODO !!! sort out double saving
-//TODO sort out alert dialog design
-//TODO prevent asking Save if note already saved and not changed
-//TODO implement some variable which check state of text( if its saved, if edited, if empty etc.)
-
-
-
-
 
 public class EditActivity extends AppCompatActivity {
     EditText editTitle;
@@ -34,9 +27,10 @@ public class EditActivity extends AppCompatActivity {
     String tempText;
 
     ArrayList<Note> notes = new ArrayList<>();
-    boolean edit = false;
+    boolean editFlag;
+
     int extraId;
-    boolean sameNote = false;
+
 
     // create an action bar button
     @Override
@@ -51,13 +45,10 @@ public class EditActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.mybutton) {
-            if (editTitle.getText().toString().trim().length() !=0 ||
-                    editText.getText().toString().trim().length() !=0){
+
                 //Save note
-                save(editTitle.getText().toString(), editText.getText().toString());
-            }else{
-                Toast.makeText(getApplicationContext(), "Note is empty!", Toast.LENGTH_SHORT).show();
-            }
+            save(editTitle.getText().toString(),editText.getText().toString());
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -68,8 +59,8 @@ public class EditActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_edit);
-        sameNote = true;
 
+        editFlag = false;
 
 
         editText = (EditText)findViewById(R.id.editText);
@@ -104,46 +95,40 @@ public class EditActivity extends AppCompatActivity {
 
             editText.setText(extraText);
             editTitle.setText(extraTitle);
-            edit = true;
-
+            editFlag = true;
         }
 
-        tempTitle = editTitle.getText().toString();
-        tempText = editText.getText().toString();
-
-
-
-
+        cache();
     }
 
-    //    Save button
+    //    Save/edit function
     private void save(String title, String text){
         DBAdapter database = new DBAdapter(this);
-        if(ifEdited()){
+        if(editFlag && ifEdited()){
             edit(notes.get(extraId).getId(), editTitle.getText().toString(), editText.getText().toString());
-            edit =false;
+            cache();
         }else
-        if(!sameNote) {
+        if(ifEdited()) {
             if(editTitle!=null || editText!=null){
             database.openDB();
             long result = database.add(title, text);
+            cache();
             if (result > 0) {
                 Toast.makeText(getApplicationContext(), "Note saved successfully", Toast.LENGTH_SHORT).show();
             }
+                database.close();
 
-            database.close();
         }
         }else{Toast.makeText(getApplicationContext(), "Note is empty!", Toast.LENGTH_SHORT).show();}
     }
 
+    //Edit function
     private void edit(int id, String title, String text){
         DBAdapter database = new DBAdapter(this);
         database.openDB();
         database.update(id, title, text);
         database.close();
         Toast.makeText(getApplicationContext(), "Note edited successfully", Toast.LENGTH_SHORT).show();
-
-
     }
 
     @Override
@@ -158,21 +143,8 @@ public class EditActivity extends AppCompatActivity {
                     .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            if (ifEdited()){
-
-                                save(editTitle.getText().toString(),editText.getText().toString());
-                                edit = false;
-                                finish();
-                            }else {
-
-                                edit(notes.get(extraId).getId(), editTitle.getText().toString(), editText.getText().toString());
-
-                                edit = false;
-                                finish();
-                            }
-
-
-
+                            save(editTitle.getText().toString(),editText.getText().toString());
+                            finish();
                         }
                     })
                     .setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -189,9 +161,6 @@ public class EditActivity extends AppCompatActivity {
                     })
                     .setIcon(null)
                     .show();
-
-
-
         } else{
             finish();
         }
@@ -201,16 +170,16 @@ public class EditActivity extends AppCompatActivity {
     private boolean ifEdited(){
         if (tempTitle.equals(editTitle.getText().toString()) &&
                 tempText.equals(editText.getText().toString())){
-            edit = false;
+
             return false;
 
         }else {
-            edit = true;
-
-            tempTitle = editTitle.getText().toString();
-            tempText = editText.getText().toString();
-
             return true;
         }
+    }
+
+    private void cache(){
+        tempTitle = editTitle.getText().toString();
+        tempText = editText.getText().toString();
     }
 }

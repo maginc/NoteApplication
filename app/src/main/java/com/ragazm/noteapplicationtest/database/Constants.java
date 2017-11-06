@@ -1,4 +1,4 @@
-package com.ragazm.noteapplicationtest;
+package com.ragazm.noteapplicationtest.database;
 
 /**
  * Created by Andris on 023 23.10.17.

@@ -16,6 +16,11 @@ import android.util.Log;
 import android.view.View;
 
 
+import com.ragazm.noteapplicationtest.database.DBAdapter;
+import com.ragazm.noteapplicationtest.recycler.ItemClickListener;
+import com.ragazm.noteapplicationtest.recycler.MyAdapter;
+import com.ragazm.noteapplicationtest.recycler.RecyclerTouchListener;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {

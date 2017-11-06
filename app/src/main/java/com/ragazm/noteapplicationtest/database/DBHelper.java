@@ -1,4 +1,4 @@
-package com.ragazm.noteapplicationtest;
+package com.ragazm.noteapplicationtest.database;
 
 import android.content.Context;
 import android.database.SQLException;

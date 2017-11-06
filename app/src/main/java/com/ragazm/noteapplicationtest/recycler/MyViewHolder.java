@@ -1,8 +1,10 @@
-package com.ragazm.noteapplicationtest;
+package com.ragazm.noteapplicationtest.recycler;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+
+import com.ragazm.noteapplicationtest.R;
 
 //import com.ragazm.noteapplicationtest.databinding.RowLayoutBinding;
 

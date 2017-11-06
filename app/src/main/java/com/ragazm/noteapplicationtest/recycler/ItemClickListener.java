@@ -1,4 +1,4 @@
-package com.ragazm.noteapplicationtest;
+package com.ragazm.noteapplicationtest.recycler;
 
 import android.view.View;
 
