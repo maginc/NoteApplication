@@ -1,11 +1,13 @@
 package com.ragazm.noteapplicationtest;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,8 +15,8 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,19 +24,14 @@ import android.widget.Toast;
 import com.ragazm.noteapplicationtest.database.DBAdapter;
 
 import java.util.ArrayList;
-
+//TODO make universal method for deleting notes
 public class EditActivity extends AppCompatActivity {
     EditText editTitle;
     EditText editText;
-
-    TextView textView;
-
     String tempTitle;
     String tempText;
-
     ArrayList<Note> notes = new ArrayList<>();
     boolean editFlag;
-
     int extraId;
 
 
@@ -48,12 +45,22 @@ public class EditActivity extends AppCompatActivity {
     // Make Save button on action bar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
 
-        if (id == R.id.mybutton) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+               onBackPressed();
+                return true;
 
+            case R.id.mybutton:
                 //Save note
             save(editTitle.getText().toString(),editText.getText().toString());
+
+            case R.id.deleteButton:
+                if (extraId>=0) {
+                    alertDialog(notes.get(extraId).getId());
+                }else {
+                    Toast.makeText(getApplicationContext(), "Nothing to delete", Toast.LENGTH_SHORT).show();
+                }
 
         }
         return super.onOptionsItemSelected(item);
@@ -64,15 +71,20 @@ public class EditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_edit);
-
-
 
         editFlag = false;
 
 
         editText = (EditText)findViewById(R.id.editText);
         editTitle = (EditText)findViewById(R.id.editTitle);
+
+        //Focus cursor on edit text field instead of default title field
+        editText.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
 
 
         DBAdapter database = new DBAdapter(this);
@@ -125,9 +137,12 @@ public class EditActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Note saved successfully", Toast.LENGTH_SHORT).show();
             }
                 database.close();
-
+            }
+        }else{
+            if (editTitle.getText().toString().equals("") && editText.getText().toString().equals("")) {
+                Toast.makeText(getApplicationContext(), "Note is empty!", Toast.LENGTH_SHORT).show();
+            }else{Toast.makeText(getApplicationContext(), "Note already saved!", Toast.LENGTH_SHORT).show();}
         }
-        }else{Toast.makeText(getApplicationContext(), "Note is empty!", Toast.LENGTH_SHORT).show();}
     }
 
     //Edit function
@@ -142,17 +157,14 @@ public class EditActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (ifEdited()){
-
             AlertDialog.Builder builder;
-
             builder = new AlertDialog.Builder(EditActivity.this);
             TextView textView = new TextView(this);
-            textView.setText("Save changes?");
+            textView.setText(getResources().getString(R.string.save_chages));
             textView.setGravity(Gravity.CENTER_HORIZONTAL);
             textView.setTextSize(22);
             textView.setTextColor(Color.BLACK);
             textView.setTypeface(null, Typeface.BOLD);
-
 
             builder.setTitle(null)
                     .setView(textView)
@@ -197,5 +209,34 @@ public class EditActivity extends AppCompatActivity {
     private void cache(){
         tempTitle = editTitle.getText().toString();
         tempText = editText.getText().toString();
+    }
+
+    public void alertDialog(final int id){
+        AlertDialog.Builder builder;
+        // Context context;
+        builder = new AlertDialog.Builder(EditActivity.this);
+
+        builder.setTitle("Delete Note")
+                .setMessage("Are you sure you want to delete this note?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DBAdapter database = new DBAdapter(EditActivity.this);
+                        database.openDB();
+                        database.delete(id);
+                        database.close();
+                        finish();
+
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do nothing if pressed NO
+                    }
+                })
+
+                .show();
+
     }
 }

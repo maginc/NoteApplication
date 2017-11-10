@@ -4,6 +4,9 @@
         android:id="@+id/mybutton"
         android:title="SAVE"
         app:showAsAction="always"
-
+        />
+    <item android:id="@+id/deleteButton"
+        android:title="DELETE"
+        app:showAsAction="always"
         />
 </menu>

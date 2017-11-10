@@ -4,4 +4,7 @@
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="note">Note</string>
+    <string name="save_chages">Save changes?</string>
+    <string name="make_backup">Make backup</string>
+    <string name="load_backup">Load backup</string>
 </resources>

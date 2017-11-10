@@ -1,10 +1,8 @@
 package com.ragazm.noteapplicationtest;
 
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -13,14 +11,18 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-
+import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.ragazm.noteapplicationtest.database.DBAdapter;
 import com.ragazm.noteapplicationtest.recycler.ItemClickListener;
 import com.ragazm.noteapplicationtest.recycler.MyAdapter;
 import com.ragazm.noteapplicationtest.recycler.RecyclerTouchListener;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,13 +30,24 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     MyAdapter adapter;
+   // Dialog deleteDialog =new Dialog();
     ArrayList<Note> notes = new ArrayList<>();
+    TextView txtNoNote;
+    private boolean showNoNote = true;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
+
+        Log.d("note.size()", String.valueOf(notes.size()));
+
+        //Floating button action
         FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,26 +71,22 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, EditActivity.class);
                 //load data
                 intent.putExtra("ID", position);
-
-                //Test test test test************************************
-                //TODO delete this!
-                String logTag = String.valueOf(notes.get(position).getId());
-                Log.d("MainActivityTag", logTag);
-                //Test test test test**********************************************
-
                 startActivity(intent);
             }
 
             @Override
             public void onItemPress(View view, int position) {
-
-
                 alertDialog(notes.get(position).getId());
+                Log.d("POSITION:", String.valueOf(position));
+                retrieve();
+
+
 
             }
         }));
 
         retrieve();
+
     }
 
     private void retrieve() {
@@ -94,6 +103,9 @@ public class MainActivity extends AppCompatActivity {
 
             Note note = new Note(title, text, id);
             notes.add(note);
+
+
+            Log.d("note.size()", String.valueOf(notes.size()));
         }
 
         //if (!(notes.size()<1)){
@@ -109,12 +121,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void alertDialog(final int id){
         AlertDialog.Builder builder;
-
-
-       // Context context;
-
-
-            builder = new AlertDialog.Builder(MainActivity.this);
+        // Context context;
+        builder = new AlertDialog.Builder(MainActivity.this);
 
         builder.setTitle("Delete Note")
                 .setMessage("Are you sure you want to delete this note?")
@@ -124,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
                         DBAdapter database = new DBAdapter(MainActivity.this);
                         database.openDB();
                         database.delete(id);
+                        database.close();
                         retrieve();
                     }
                 })
@@ -133,8 +142,37 @@ public class MainActivity extends AppCompatActivity {
                         // Do nothing if pressed NO
                     }
                 })
-                .setIcon(android.R.drawable.ic_dialog_alert)
+
                 .show();
 
     }
+
+  /**
+   * Setting menu for future backup function
+   *
+   * @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // int id = item.getItemId();
+        switch (item.getItemId()) {
+            case R.id.make_backup:
+
+                return true;
+
+            case R.id.load_backup:
+                //Save note
+
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    **/
+
+
+
+
 }
