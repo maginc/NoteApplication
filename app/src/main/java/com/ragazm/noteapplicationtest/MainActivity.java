@@ -3,16 +3,14 @@ package com.ragazm.noteapplicationtest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -22,7 +20,6 @@ import com.ragazm.noteapplicationtest.recycler.ItemClickListener;
 import com.ragazm.noteapplicationtest.recycler.MyAdapter;
 import com.ragazm.noteapplicationtest.recycler.RecyclerTouchListener;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,11 +27,10 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     MyAdapter adapter;
-   // Dialog deleteDialog =new Dialog();
+    // Dialog deleteDialog =new Dialog();
     ArrayList<Note> notes = new ArrayList<>();
     TextView txtNoNote;
     private boolean showNoNote = true;
-
 
 
     @Override
@@ -48,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("note.size()", String.valueOf(notes.size()));
 
         //Floating button action
-        FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.floatingActionButton);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,13 +54,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         adapter = new MyAdapter(this, notes);
 
-        recyclerView.addOnItemTouchListener( new RecyclerTouchListener(this, recyclerView, new ItemClickListener() {
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, recyclerView, new ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 // Open EditActivity, pass data, create intent
@@ -81,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
                 retrieve();
 
 
-
             }
         }));
 
@@ -96,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
         Cursor cursor = database.getAllNotes();
 
-        while(cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             int id = cursor.getInt(0);
             String title = cursor.getString(1);
             String text = cursor.getString(2);
@@ -109,17 +104,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //if (!(notes.size()<1)){
-            recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
         //}
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         retrieve();
     }
 
-    public void alertDialog(final int id){
+    public void alertDialog(final int id) {
         AlertDialog.Builder builder;
         // Context context;
         builder = new AlertDialog.Builder(MainActivity.this);
@@ -147,32 +142,28 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-  /**
-   * Setting menu for future backup function
-   *
-   * @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return super.onCreateOptionsMenu(menu);
+    /**
+     * Setting menu for future backup function
+     *
+     * @Override public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.menu_main, menu);
+    return super.onCreateOptionsMenu(menu);
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // int id = item.getItemId();
-        switch (item.getItemId()) {
-            case R.id.make_backup:
+     @Override public boolean onOptionsItemSelected(MenuItem item) {
+     // int id = item.getItemId();
+     switch (item.getItemId()) {
+     case R.id.make_backup:
 
-                return true;
+     return true;
 
-            case R.id.load_backup:
-                //Save note
-
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
-    **/
+     case R.id.load_backup:
+     //Save note
 
 
+     }
+     return super.onOptionsItemSelected(item);
+     }
+     **/
 
 
 }

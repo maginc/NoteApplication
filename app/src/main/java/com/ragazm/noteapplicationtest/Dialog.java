@@ -8,6 +8,7 @@ import com.ragazm.noteapplicationtest.database.DBAdapter;
 
 /**
  * Created by Andris on 026 26.10.17.
+ * TODO make universal method for deleting notes
  */
 
 public class Dialog {

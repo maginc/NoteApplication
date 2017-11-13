@@ -4,13 +4,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.v7.app.ActionBar;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -24,7 +22,7 @@ import android.widget.Toast;
 import com.ragazm.noteapplicationtest.database.DBAdapter;
 
 import java.util.ArrayList;
-//TODO make universal method for deleting notes
+
 public class EditActivity extends AppCompatActivity {
     EditText editTitle;
     EditText editText;
@@ -48,17 +46,18 @@ public class EditActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case android.R.id.home:
-               onBackPressed();
+                onBackPressed();
                 return true;
 
             case R.id.mybutton:
                 //Save note
-            save(editTitle.getText().toString(),editText.getText().toString());
+                save(editTitle.getText().toString(), editText.getText().toString());
+                return true;
 
             case R.id.deleteButton:
-                if (extraId>=0) {
+                if (extraId >= 0) {
                     alertDialog(notes.get(extraId).getId());
-                }else {
+                } else {
                     Toast.makeText(getApplicationContext(), "Nothing to delete", Toast.LENGTH_SHORT).show();
                 }
 
@@ -78,8 +77,8 @@ public class EditActivity extends AppCompatActivity {
         editFlag = false;
 
 
-        editText = (EditText)findViewById(R.id.editText);
-        editTitle = (EditText)findViewById(R.id.editTitle);
+        editText = (EditText) findViewById(R.id.editText);
+        editTitle = (EditText) findViewById(R.id.editTitle);
 
         //Focus cursor on edit text field instead of default title field
         editText.requestFocus();
@@ -92,7 +91,7 @@ public class EditActivity extends AppCompatActivity {
         notes.clear();
         Cursor cursor = database.getAllNotes();
 
-        while(cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             int id = cursor.getInt(0);
             String title = cursor.getString(1);
             String text = cursor.getString(2);
@@ -108,10 +107,10 @@ public class EditActivity extends AppCompatActivity {
 
         Log.d("ExtraId = ", String.valueOf(extraId));
 
-        if (extraId >= 0){
+        if (extraId >= 0) {
 
             String extraTitle = notes.get(extraId).getTitle();
-            String extraText =  notes.get(extraId).getText();
+            String extraText = notes.get(extraId).getText();
 
             editText.setText(extraText);
             editTitle.setText(extraTitle);
@@ -122,41 +121,43 @@ public class EditActivity extends AppCompatActivity {
     }
 
     //    Save/edit function
-    private void save(String title, String text){
+    private void save(String title, String text) {
         DBAdapter database = new DBAdapter(this);
-        if(editFlag && ifEdited()){
+        if (editFlag && ifEdited()) {
             edit(notes.get(extraId).getId(), editTitle.getText().toString(), editText.getText().toString());
             cache();
-        }else
-        if(ifEdited()) {
-            if(editTitle!=null || editText!=null){
-            database.openDB();
-            long result = database.add(title, text);
-            cache();
-            if (result > 0) {
-                Toast.makeText(getApplicationContext(), "Note saved successfully", Toast.LENGTH_SHORT).show();
-            }
+        } else if (ifEdited()) {
+            if (editTitle != null || editText != null) {
+                database.openDB();
+                long result = database.add(title, text);
+                cache();
+                if (result > 0) {
+                    Toast.makeText(getApplicationContext(), "Note saved successfully", Toast.LENGTH_SHORT).show();
+                }
                 database.close();
             }
-        }else{
+        } else {
             if (editTitle.getText().toString().equals("") && editText.getText().toString().equals("")) {
                 Toast.makeText(getApplicationContext(), "Note is empty!", Toast.LENGTH_SHORT).show();
-            }else{Toast.makeText(getApplicationContext(), "Note already saved!", Toast.LENGTH_SHORT).show();}
+            } else {
+                Toast.makeText(getApplicationContext(), "Note already saved!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
     //Edit function
-    private void edit(int id, String title, String text){
+    private void edit(int id, String title, String text) {
         DBAdapter database = new DBAdapter(this);
         database.openDB();
         database.update(id, title, text);
         database.close();
         Toast.makeText(getApplicationContext(), "Note edited successfully", Toast.LENGTH_SHORT).show();
     }
-//Alert dialog on back button pressed
+
+    //Alert dialog on back button pressed
     @Override
     public void onBackPressed() {
-        if (ifEdited()){
+        if (ifEdited()) {
             AlertDialog.Builder builder;
             builder = new AlertDialog.Builder(EditActivity.this);
             TextView textView = new TextView(this);
@@ -171,7 +172,7 @@ public class EditActivity extends AppCompatActivity {
                     .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            save(editTitle.getText().toString(),editText.getText().toString());
+                            save(editTitle.getText().toString(), editText.getText().toString());
                             finish();
                         }
                     })
@@ -189,29 +190,29 @@ public class EditActivity extends AppCompatActivity {
                     })
                     .setIcon(null)
                     .show();
-        } else{
+        } else {
             finish();
         }
 
     }
 
-    private boolean ifEdited(){
+    private boolean ifEdited() {
         if (tempTitle.equals(editTitle.getText().toString()) &&
-                tempText.equals(editText.getText().toString())){
+                tempText.equals(editText.getText().toString())) {
 
             return false;
 
-        }else {
+        } else {
             return true;
         }
     }
 
-    private void cache(){
+    private void cache() {
         tempTitle = editTitle.getText().toString();
         tempText = editText.getText().toString();
     }
 
-    public void alertDialog(final int id){
+    public void alertDialog(final int id) {
         AlertDialog.Builder builder;
         // Context context;
         builder = new AlertDialog.Builder(EditActivity.this);
