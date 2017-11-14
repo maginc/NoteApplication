@@ -1,13 +1,21 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        release {
+            keyAlias 'timmer'
+            keyPassword 'scuka3271'
+            storeFile file('E:/AppFactory/MyKey.jks')
+            storePassword 'scuka3271'
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion "26.0.2"
     dataBinding {
         enabled = true
     }
     defaultConfig {
-        applicationId "com.ragazm.noteapplicationtest"
+        applicationId 'com.ragazm.simplenotepad'
         minSdkVersion 21
         targetSdkVersion 25
         versionCode 1
@@ -20,10 +28,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors {
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -33,6 +43,4 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.4.0'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:design:25.4.0'
-
-
 }

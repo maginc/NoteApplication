@@ -1,4 +1,4 @@
-package com.ragazm.noteapplicationtest;
+package com.ragazm.notepad;
 
 import org.junit.Test;
 

@@ -1,12 +1,12 @@
-package com.ragazm.noteapplicationtest.recycler;
+package com.ragazm.notepad.recycler;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.ragazm.noteapplicationtest.R;
+import com.ragazm.notepad.R;
 
-//import com.ragazm.noteapplicationtest.databinding.RowLayoutBinding;
+//import com.ragazm.NotePad.databinding.RowLayoutBinding;
 
 /**
  * Created by Andris on 022 22.10.17.

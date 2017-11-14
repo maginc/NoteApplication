@@ -1,4 +1,4 @@
-package com.ragazm.noteapplicationtest.recycler;
+package com.ragazm.notepad.recycler;
 
 import android.view.View;
 

@@ -1,4 +1,4 @@
-package com.ragazm.noteapplicationtest.database;
+package com.ragazm.notepad.database;
 
 import android.content.ContentValues;
 import android.content.Context;

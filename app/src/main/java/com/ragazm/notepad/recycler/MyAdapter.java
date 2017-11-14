@@ -1,4 +1,4 @@
-package com.ragazm.noteapplicationtest.recycler;
+package com.ragazm.notepad.recycler;
 
 
 import android.content.Context;
@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-import com.ragazm.noteapplicationtest.Note;
-import com.ragazm.noteapplicationtest.R;
+import com.ragazm.notepad.Note;
+import com.ragazm.notepad.R;
 
 import java.util.ArrayList;
 
@@ -47,6 +47,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
+
         holder.txtTitle.setText(notes.get(position).getTitle());
         holder.txtText.setText(notes.get(position).getText());
 

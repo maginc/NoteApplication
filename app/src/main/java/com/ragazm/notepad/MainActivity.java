@@ -1,4 +1,4 @@
-package com.ragazm.noteapplicationtest;
+package com.ragazm.notepad;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,10 +15,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.ragazm.noteapplicationtest.database.DBAdapter;
-import com.ragazm.noteapplicationtest.recycler.ItemClickListener;
-import com.ragazm.noteapplicationtest.recycler.MyAdapter;
-import com.ragazm.noteapplicationtest.recycler.RecyclerTouchListener;
+import com.ragazm.notepad.database.DBAdapter;
+import com.ragazm.notepad.recycler.ItemClickListener;
+import com.ragazm.notepad.recycler.MyAdapter;
+import com.ragazm.notepad.recycler.RecyclerTouchListener;
 
 import java.util.ArrayList;
 

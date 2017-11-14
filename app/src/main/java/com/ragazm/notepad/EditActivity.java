@@ -1,4 +1,4 @@
-package com.ragazm.noteapplicationtest;
+package com.ragazm.notepad;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,7 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ragazm.noteapplicationtest.database.DBAdapter;
+import com.ragazm.notepad.database.DBAdapter;
 
 import java.util.ArrayList;
 

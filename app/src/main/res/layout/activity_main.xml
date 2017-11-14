@@ -8,7 +8,7 @@
     android:layout_gravity="center_vertical|center"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context="com.ragazm.noteapplicationtest.MainActivity">
+    tools:context="com.ragazm.notepad.MainActivity">
 
     <TextView
         android:id="@+id/addNoteText"
