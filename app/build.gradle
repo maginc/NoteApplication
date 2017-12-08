@@ -4,9 +4,9 @@ android {
     signingConfigs {
         release {
             keyAlias 'timmer'
-            keyPassword 'scuka3271'
+            keyPassword 
             storeFile file('E:/AppFactory/MyKey.jks')
-            storePassword 'scuka3271'
+            storePassword 
         }
     }
     compileSdkVersion 25
